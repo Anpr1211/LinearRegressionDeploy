@@ -4,11 +4,12 @@ import numpy as np
 
 app = Flask(__name__)
 model = joblib.load('finalized_model.pkl')
+scaler = joblib.load('scaler.pkl')
 
 def predict(data):
 
     features = [float(x) for x in data.split()]
-    final_features = [np.array(features)]
+    final_features = scaler.fit_transform(np.reshape(np.array(features), (1, 7)))
     prediction = model.predict(final_features)
     
     return prediction
